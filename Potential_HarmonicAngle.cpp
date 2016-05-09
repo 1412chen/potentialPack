@@ -2,6 +2,9 @@
 #include <cmath>
 
 using namespace Angle_Namespace;
+constexpr double FiniteDistance = 1.e-13;
+constexpr double InverseFiniteDistance = 1./FiniteDistance;
+
 
 Potential_HarmonicAngle::Potential_HarmonicAngle (
 	double k,
@@ -25,38 +28,48 @@ Potential_HarmonicAngle::ObjectiveFunction (
 }
 
 
-_1stDerivative_t
+PotentialAngle::_1stDerivative_t
 Potential_HarmonicAngle::_1stDerivative (
 	double cosTheta,
 	double /*rij*/,
 	double /*rik*/
 ) const noexcept
 {
-	auto theta = acos(cosTheta);
-	auto dTheta = theta - m_theta0;
-
 	_1stDerivative_t _1stDeri;
 	_1stDeri.fill(0.);
-	_1stDeri[DCosTheta] = -2.*m_k*dTheta/sin(theta);
+	if ( 1.-fabs(cosTheta) < FiniteDistance )
+		_1stDeri[DCosTheta] = 2.*m_k*m_theta0 * InverseFiniteDistance;
+	else
+	{
+		auto theta = acos(cosTheta);
+		auto dTheta = theta - m_theta0;
+
+		_1stDeri[DCosTheta] = -2.*m_k*dTheta/sin(theta);
+	}
 	return _1stDeri;
 }
 
 
-_2ndDerivative_t
+PotentialAngle::_2ndDerivative_t
 Potential_HarmonicAngle::_2ndDerivative (
 	double cosTheta,
 	double /*rij*/,
 	double /*rik*/
 ) const noexcept
 {
-	auto sinThetaSq = 1. - cosTheta*cosTheta;
-	auto theta = acos(cosTheta);
-	auto dTheta = theta - m_theta0;
-	auto cotTheta = cosTheta / sqrt(sinThetaSq);
-
 	_2ndDerivative_t _2ndDeri;
 	_2ndDeri.fill(0.);
-	_2ndDeri[DCosTheta_DCosTheta] = 2.*m_k/sinThetaSq * (1.-dTheta*cotTheta);
+	if ( 1.-fabs(cosTheta) < FiniteDistance )
+		_2ndDeri[DCosTheta_DCosTheta] =  2.*m_k*(1.+m_theta0*cosTheta) * InverseFiniteDistance;
+	else
+	{
+		auto sinThetaSq = 1. - cosTheta*cosTheta;
+		auto theta = acos(cosTheta);
+		auto dTheta = theta - m_theta0;
+		auto cotTheta = cosTheta / sqrt(sinThetaSq);
+
+		_2ndDeri[DCosTheta_DCosTheta] = 2.*m_k/sinThetaSq * (1.-dTheta*cotTheta);
+	}
 	return _2ndDeri;
 }
 

@@ -20,7 +20,7 @@ Potential_LennardJones::ObjectiveFunction (
 }
 
 
-Potential::Pair_1stDerivative_t
+PotentialPair::_1stDerivative_t
 Potential_LennardJones::_1stDerivative (
 	double rij
 ) const noexcept
@@ -31,7 +31,7 @@ Potential_LennardJones::_1stDerivative (
 }
 
 
-Potential::Pair_2ndDerivative_t
+PotentialPair::_2ndDerivative_t
 Potential_LennardJones::_2ndDerivative (
 	double rij
 ) const noexcept

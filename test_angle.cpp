@@ -6,25 +6,29 @@
 
 using namespace std;
 
-Potential_HarmonicAngle potential;
-//Potential_StillingerWeber potential;
-array3d rij{-0.9, 0.4, -0.1};
-array3d rik{0.9, 0.3, 0.1};
+//Potential_HarmonicAngle potential(0.5);
+Potential_StillingerWeber potential;
+array3d rij{-sqrt(3.)*0.5, -0.5, 0.};
+array3d rik{sqrt(3.)*0.5, -0.5, 0.};
 constexpr double finiteDist = 1.e-10;
 
 
 void test_1stDerivative ()
 {
 	auto force = potential.Force(rij, rik);
-	cout << force[0][0] << " " <<force[0][1] << " " << force[0][2] << "\t"
-	<< force[1][0] << " " <<force[1][1] << " " << force[1][2] << endl;
+	cout << "potentialPack:" << endl;
+	cout << "fj: " << force[0][0] << " " <<force[0][1] << " " << force[0][2] << "\n"
+	<< "fk: " << force[1][0] << " " <<force[1][1] << " " << force[1][2] << endl;
 
 	force = potential.Force(rij, rik, FiniteDifference_t());
-	cout << force[0][0] << " " <<force[0][1] << " " << force[0][2] << "\t"
-	<< force[1][0] << " " <<force[1][1] << " " << force[1][2] << endl;
+	cout << "potentialPack (finite difference):" << endl;
+	cout << "fj: " << force[0][0] << " " <<force[0][1] << " " << force[0][2] << "\n"
+	<< "fk: " << force[1][0] << " " <<force[1][1] << " " << force[1][2] << endl;
 
+	cout << "finite difference:" << endl;
 	double energy = potential.Energy(rij, rik);
 	double e;
+	cout << "fj: ";
 	rij[0] += finiteDist;
 	e = potential.Energy(rij, rik);
 	cout << (e-energy)/finiteDist << " ";
@@ -35,8 +39,9 @@ void test_1stDerivative ()
 	rij[1] -= finiteDist;
 	rij[2] += finiteDist;
 	e = potential.Energy(rij, rik);
-	cout << (e-energy)/finiteDist << "\t";
+	cout << (e-energy)/finiteDist << "\n";
 	rij[2] -= finiteDist;
+	cout << "fk: ";
 	rik[0] += finiteDist;
 	e = potential.Energy(rij, rik);
 	cout << (e-energy)/finiteDist << " ";
@@ -47,14 +52,16 @@ void test_1stDerivative ()
 	rik[1] -= finiteDist;
 	rik[2] += finiteDist;
 	e = potential.Energy(rij, rik);
-	cout << (e-energy)/finiteDist << "\n";
+	cout << (e-energy)/finiteDist << endl;
 	rik[2] -= finiteDist;
 }
 
 void test_2ndDerivative ()
 {
 	auto hessian = potential.Hessian(rij, rik);
-	cout << hessian[0][0][0] << " " << hessian[0][0][1] << " " << hessian[0][0][2] << "\t"
+	cout << "potentialPack:" << endl;
+	cout << "Hij:\tHik\tHjk" << endl
+	<< hessian[0][0][0] << " " << hessian[0][0][1] << " " << hessian[0][0][2] << "\t"
 	<< hessian[1][0][0] << " " << hessian[1][0][1] << " " << hessian[1][0][2] << "\t"
 	<< hessian[2][0][0] << " " << hessian[2][0][1] << " " << hessian[2][0][2] << "\n"
 	<< hessian[0][1][0] << " " << hessian[0][1][1] << " " << hessian[0][1][2] << "\t"
@@ -65,7 +72,9 @@ void test_2ndDerivative ()
 	<< hessian[2][2][0] << " " << hessian[2][2][1] << " " << hessian[2][2][2] << "\n"<< endl;
 
 	hessian = potential.Hessian(rij, rik, FiniteDifference_t());
-	cout << hessian[0][0][0] << " " << hessian[0][0][1] << " " << hessian[0][0][2] << "\t"
+	cout << "potentialPack (finite difference):" << endl;
+	cout << "Hij:\tHik\tHjk" << endl
+	<< hessian[0][0][0] << " " << hessian[0][0][1] << " " << hessian[0][0][2] << "\t"
 	<< hessian[1][0][0] << " " << hessian[1][0][1] << " " << hessian[1][0][2] << "\t"
 	<< hessian[2][0][0] << " " << hessian[2][0][1] << " " << hessian[2][0][2] << "\n"
 	<< hessian[0][1][0] << " " << hessian[0][1][1] << " " << hessian[0][1][2] << "\t"
@@ -76,13 +85,15 @@ void test_2ndDerivative ()
 	<< hessian[2][2][0] << " " << hessian[2][2][1] << " " << hessian[2][2][2] << "\n"<< endl;
 
 	// ij, jk
+	cout << "finite difference:" << endl;
 	auto force = potential.Force(rij, rik);
 	auto forceI = Scale( Addition(force[0], force[1]), -1. );
 	rij[0] -= finiteDist;
 	rik[0] -= finiteDist;
 	auto dForce = potential.Force(rij, rik);
 	auto dForceI = Scale( Addition(dForce[0], dForce[1]), -1.);
-	cout <<	(dForceI[0]-forceI[0])/finiteDist << " "
+	cout << "Hii:\tHij\tHik\n"
+	<<	(dForceI[0]-forceI[0])/finiteDist << " "
 	<<	(dForceI[1]-forceI[1])/finiteDist << " "
 	<<	(dForceI[2]-forceI[2])/finiteDist << "\t"
 	<<	(dForce[0][0]-force[0][0])/finiteDist << " "
@@ -97,7 +108,8 @@ void test_2ndDerivative ()
 	rik[1] -= finiteDist;
 	dForce = potential.Force(rij, rik);
 	dForceI = Scale( Addition(dForce[0], dForce[1]), -1.);
-	cout <<	(dForceI[0]-forceI[0])/finiteDist << " "
+	cout
+	<<	(dForceI[0]-forceI[0])/finiteDist << " "
 	<<	(dForceI[1]-forceI[1])/finiteDist << " "
 	<<	(dForceI[2]-forceI[2])/finiteDist << "\t"
 	<<	(dForce[0][0]-force[0][0])/finiteDist << " "
@@ -112,7 +124,8 @@ void test_2ndDerivative ()
 	rik[2] -= finiteDist;
 	dForce = potential.Force(rij, rik);
 	dForceI = Scale( Addition(dForce[0], dForce[1]), -1.);
-	cout <<	(dForceI[0]-forceI[0])/finiteDist << " "
+	cout
+	<<	(dForceI[0]-forceI[0])/finiteDist << " "
 	<<	(dForceI[1]-forceI[1])/finiteDist << " "
 	<<	(dForceI[2]-forceI[2])/finiteDist << "\t"
 	<<	(dForce[0][0]-force[0][0])/finiteDist << " "
@@ -127,7 +140,8 @@ void test_2ndDerivative ()
 	rij[0] += finiteDist;
 	dForce = potential.Force(rij, rik);
 	dForceI = Scale( Addition(dForce[0], dForce[1]), -1.);
-	cout <<	(dForceI[0]-forceI[0])/finiteDist << " "
+	cout << "Hji\tHjj\tHjk:\n"
+	<<	(dForceI[0]-forceI[0])/finiteDist << " "
 	<<	(dForceI[1]-forceI[1])/finiteDist << " "
 	<<	(dForceI[2]-forceI[2])/finiteDist << "\t"
 	<<	(dForce[0][0]-force[0][0])/finiteDist << " "
@@ -167,7 +181,8 @@ void test_2ndDerivative ()
 	rik[0] += finiteDist;
 	dForce = potential.Force(rij, rik);
 	dForceI = Scale( Addition(dForce[0], dForce[1]), -1.);
-	cout <<	(dForceI[0]-forceI[0])/finiteDist << " "
+	cout <<	"Hki\tHkj\tHkk\n"
+	<<	(dForceI[0]-forceI[0])/finiteDist << " "
 	<<	(dForceI[1]-forceI[1])/finiteDist << " "
 	<<	(dForceI[2]-forceI[2])/finiteDist << "\t"
 	<<	(dForce[0][0]-force[0][0])/finiteDist << " "

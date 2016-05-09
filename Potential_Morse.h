@@ -1,16 +1,17 @@
-#ifndef POTENTIAL_HARMONICBOND_H_INCLUDED
-#define POTENTIAL_HARMONICBOND_H_INCLUDED
+#ifndef POTENTIAL_MORSE_H_INCLUDED
+#define POTENTIAL_MORSE_H_INCLUDED
 
 #include "PotentialPair.h"
 
-class Potential_HarmonicBond : public PotentialPair {
+class Potential_Morse : public PotentialPair {
 public:
-	Potential_HarmonicBond (
-		double k = 0.5,
+	Potential_Morse (
+		double D0 = 1.,
+		double alpha = 1.,
 		double r0 = 1.
 	) noexcept;
 
-protected:
+private:
 	double
 	ObjectiveFunction (
 		double rij
@@ -28,9 +29,15 @@ protected:
 		double rij
 	) const noexcept override;
 
+protected:
+	double ExpTerm (
+		double rij
+	) const noexcept;
+
 private:
-	double m_k;
+	double m_D0;
+	double m_alpha;
 	double m_r0;
 };
 
-#endif // POTENTIAL_HARMONICBOND_H_INCLUDED
+#endif // POTENTIAL_MORSE_H_INCLUDED

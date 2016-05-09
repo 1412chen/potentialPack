@@ -1,17 +1,25 @@
 .DEFAULT_GOAL := LIB
 
-CC = /opt/gcc-5.3.0/bin/g++
+CC = /opt/gcc-6.1.0/bin/g++
 CFLAGS = -std=c++14 -Wall -Wextra
-OBJDIR = ../
-LIBDIR = ../
-LIBFILE = libPotentialPack.a
+OBJDIR = ../build
+LIBDIR = ..
+LIBFILE = libpotentialPack.a
 
 CPPFILES = Potential.cpp \
+	PotentialPair.cpp \
+	PotentialAngle.cpp \
+	PotentialBondAngle.cpp \
+	PotentialDihedral.cpp \
+	PotentialManybody.cpp \
 	Potential_HarmonicBond.cpp \
-	Potential_HarmonicAngle.cpp \
-	Potential_StillingerWeber.cpp \
 	Potential_LennardJones.cpp \
-	Potential_Buckingham.cpp
+	Potential_Morse.cpp \
+	Potential_Buckingham.cpp \
+	Potential_HarmonicAngle.cpp \
+	Potential_HarmonicDihedral.cpp \
+	Potential_StillingerWeber.cpp 
+#	Potential_Tersoff.cpp 
 
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(CPPFILES))
 

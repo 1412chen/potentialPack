@@ -18,24 +18,24 @@ Potential_HarmonicBond::ObjectiveFunction (
 ) const noexcept
 {
 	auto dr = rij - m_r0;
-	return 0.5 * m_k * dr * dr;
+	return m_k * dr * dr;
 }
 
 
-Potential::Pair_1stDerivative_t
+PotentialPair::_1stDerivative_t
 Potential_HarmonicBond::_1stDerivative (
 	double rij
 ) const noexcept
 {
-	return m_k * (rij - m_r0);
+	return 2.*m_k * (rij - m_r0);
 }
 
 
-Potential::Pair_2ndDerivative_t
+PotentialPair::_2ndDerivative_t
 Potential_HarmonicBond::_2ndDerivative (
 	double /*rij*/
 ) const noexcept
 {
-	return m_k;
+	return 2.*m_k;
 }
 

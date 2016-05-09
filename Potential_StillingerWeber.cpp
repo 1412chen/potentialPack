@@ -2,7 +2,6 @@
 #include <cmath>
 
 using namespace std;
-using namespace Angle_Namespace;
 
 Potential_StillingerWeber::Potential_StillingerWeber (
 	double epsilon,
@@ -58,7 +57,7 @@ Potential_StillingerWeber::ObjectiveFunction (
 }
 
 
-double
+PotentialPair::_1stDerivative_t
 Potential_StillingerWeber::_1stDerivative (
 	double rij
 ) const noexcept
@@ -76,7 +75,7 @@ Potential_StillingerWeber::_1stDerivative (
 }
 
 
-_1stDerivative_t
+PotentialAngle::_1stDerivative_t
 Potential_StillingerWeber::_1stDerivative (
 	double cosTheta,
 	double rij,
@@ -94,7 +93,7 @@ Potential_StillingerWeber::_1stDerivative (
 	auto commonFactor = m_lambda * m_epsilon * expIJTerm * expIKTerm * cosTerm;
 	auto commonFactorR = -commonFactor * cosTerm / (m_gamma*m_sigma);
 
-	Potential::Angle_1stDerivative_t _1stDeri;
+	PotentialAngle::_1stDerivative_t _1stDeri;
 	_1stDeri[DCosTheta] = commonFactor * 2.;
 	_1stDeri[DRij] = commonFactorR * expIJFactor * expIJFactor;
 	_1stDeri[DRik] = commonFactorR * expIKFactor * expIKFactor;
@@ -102,7 +101,7 @@ Potential_StillingerWeber::_1stDerivative (
 }
 
 
-double
+PotentialPair::_2ndDerivative_t
 Potential_StillingerWeber::_2ndDerivative (
 	double rij
 ) const noexcept
@@ -128,7 +127,7 @@ Potential_StillingerWeber::_2ndDerivative (
 }
 
 
-_2ndDerivative_t
+PotentialAngle::_2ndDerivative_t
 Potential_StillingerWeber::_2ndDerivative (
 	double cosTheta,
 	double rij,
@@ -152,7 +151,7 @@ Potential_StillingerWeber::_2ndDerivative (
 	double commonCosTerm = commonFactor*cosTerm;
 	double commonCosSqTerm = commonCosTerm*cosTerm;
 
-	_2ndDerivative_t _2ndDeri;
+	PotentialAngle::_2ndDerivative_t _2ndDeri;
 	_2ndDeri[DCosTheta_DCosTheta] = 2.*commonFactor;
 	_2ndDeri[DCosTheta_DRij] = -2.*commonCosTerm*ijFactor;
 	_2ndDeri[DCosTheta_DRik] = -2.*commonCosTerm*ikFactor;

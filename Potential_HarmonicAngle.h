@@ -1,16 +1,16 @@
 #ifndef POTENTIAL_HARMONICANGLE_H_INCLUDED
 #define POTENTIAL_HARMONICANGLE_H_INCLUDED
 
-#include "Potential.h"
+#include "PotentialAngle.h"
 
-class Potential_HarmonicAngle : public Potential {
+class Potential_HarmonicAngle : public PotentialAngle {
 public:
 	Potential_HarmonicAngle (
-		double k = 1.,
-		double theta0 = 0.5
+		double k = 0.5,
+		double theta0 = 1.04
 	) noexcept;
 
-protected:
+private:
 	double
 	ObjectiveFunction (
 		double cosTheta,
@@ -19,7 +19,7 @@ protected:
 	) const noexcept override;
 
 
-	Angle_Namespace::_1stDerivative_t
+	_1stDerivative_t
 	_1stDerivative (
 		double cosTheta,
 		double rij,
@@ -27,7 +27,7 @@ protected:
 	) const noexcept override;
 
 
-	Angle_Namespace::_2ndDerivative_t
+	_2ndDerivative_t
 	_2ndDerivative (
 		double cosTheta,
 		double rij,

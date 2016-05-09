@@ -22,7 +22,7 @@ Potential_Buckingham::ObjectiveFunction (
 }
 
 
-double
+PotentialPair::_1stDerivative_t
 Potential_Buckingham::_1stDerivative (
 	double rij
 ) const noexcept
@@ -32,7 +32,7 @@ Potential_Buckingham::_1stDerivative (
 }
 
 
-double
+PotentialPair::_2ndDerivative_t
 Potential_Buckingham::_2ndDerivative (
 	double rij
 ) const noexcept
