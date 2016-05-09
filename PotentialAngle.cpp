@@ -171,69 +171,44 @@ PotentialAngle::HessianImp (
 	auto _1stDeri = _1stDeriFunc(cosTheta, rij_, rik_);
 	auto _2ndDeri = _2ndDeriFunc(cosTheta, rij_, rik_);
 
-	//-------------------------------------//
-
-	auto termIJ_1L = Addition (
-		Scale(nij, -_2ndDeri[DRij_DRij]),
-		Scale(nik, -_2ndDeri[DRij_DRik]),
-		Scale(cosTheta_dri, _2ndDeri[DCosTheta_DRij])
-	);
-	auto& termIJ_1R = nij;
-	auto termIJ_2 = Scale(rij_dri_drj, _1stDeri[DRij]);
-	auto termIJ_3L = Addition (
-		Scale(nij, -_2ndDeri[DCosTheta_DRij]),
-		Scale(nik, -_2ndDeri[DCosTheta_DRik]),
-		Scale(cosTheta_dri, _2ndDeri[DCosTheta_DCosTheta])
-	);
-	auto& termIJ_3R = cosTheta_drj;
-	auto termIJ_4 = Scale(cosTheta_dri_drj, _1stDeri[DCosTheta]);
 	auto hessianIJ = Addition (
-		OuterDot(termIJ_1L, termIJ_1R),
-		termIJ_2,
-		OuterDot(termIJ_3L, termIJ_3R),
-		termIJ_4
+		OuterDot( Addition (
+			Scale(nij, -_2ndDeri[DRij_DRij]),
+			Scale(nik, -_2ndDeri[DRij_DRik]),
+			Scale(cosTheta_dri, _2ndDeri[DCosTheta_DRij])
+		), nij),
+		Scale(rij_dri_drj, _1stDeri[DRij]),
+		OuterDot( Addition (
+			Scale(nij, -_2ndDeri[DCosTheta_DRij]),
+			Scale(nik, -_2ndDeri[DCosTheta_DRik]),
+			Scale(cosTheta_dri, _2ndDeri[DCosTheta_DCosTheta])
+		), cosTheta_drj),
+		Scale(cosTheta_dri_drj, _1stDeri[DCosTheta])
 	);
-
-	//-------------------------------------//
-
-	auto termIK_1L = Addition (
-		Scale(nij, -_2ndDeri[DRij_DRik]),
-		Scale(nik, -_2ndDeri[DRij_DRij]),
-		Scale(cosTheta_dri, _2ndDeri[DCosTheta_DRik])
-	);
-	auto& termIK_1R = nik;
-	auto termIK_2 = Scale(rik_dri_drk, _1stDeri[DRik]);
-	auto& termIK_3L = termIJ_3L;/*Addition (
-		Scale(cosTheta_dri, _2ndDeri[DCosTheta_DCosTheta]),
-		Scale(nij, _2ndDeri[DCosTheta_DRij]),
-		Scale(nik, _2ndDeri[DCosTheta_DRik])
-	);*/
-	auto& termIK_3R = cosTheta_drk;
-	auto termIK_4 = Scale( cosTheta_dri_drk, _1stDeri[DCosTheta] );
 	auto hessianIK = Addition (
-		OuterDot(termIK_1L, termIK_1R),
-		termIK_2,
-		OuterDot(termIK_3L, termIK_3R),
-		termIK_4
+		OuterDot( Addition (
+			Scale(nij, -_2ndDeri[DRij_DRik]),
+			Scale(nik, -_2ndDeri[DRij_DRij]),
+			Scale(cosTheta_dri, _2ndDeri[DCosTheta_DRik])
+		), nik),
+		Scale(rik_dri_drk, _1stDeri[DRik]),
+		OuterDot ( Addition (
+			Scale(cosTheta_dri, _2ndDeri[DCosTheta_DCosTheta]),
+			Scale(nij, _2ndDeri[DCosTheta_DRij]),
+			Scale(nik, _2ndDeri[DCosTheta_DRik])
+		), cosTheta_drk),
+		Scale( cosTheta_dri_drk, _1stDeri[DCosTheta] )
 	);
-
-	//-------------------------------------//
-
-	auto termJK_1L = Addition (
-		Scale(nij, _2ndDeri[DRij_DRik]),
-		Scale(cosTheta_drj, _2ndDeri[DCosTheta_DRik])
-	);
-	auto& termJK_1R = nik;
-	auto termJK_2L = Addition (
-		Scale(cosTheta_drj, _2ndDeri[DCosTheta_DCosTheta]),
-		Scale(nij, _2ndDeri[DCosTheta_DRij])
-	);
-	auto& termJK_2R = cosTheta_drk;
-	auto termJK_3 = Scale(cosTheta_drj_drk, _1stDeri[DCosTheta]);
 	auto hessianJK = Addition (
-		OuterDot(termJK_1L, termJK_1R),
-		OuterDot(termJK_2L, termJK_2R),
-		termJK_3
+		OuterDot( Addition (
+			Scale(nij, _2ndDeri[DRij_DRik]),
+			Scale(cosTheta_drj, _2ndDeri[DCosTheta_DRik])
+		), nik),
+		OuterDot( Addition (
+			Scale(cosTheta_drj, _2ndDeri[DCosTheta_DCosTheta]),
+			Scale(nij, _2ndDeri[DCosTheta_DRij])
+		), cosTheta_drk),
+		Scale(cosTheta_drj_drk, _1stDeri[DCosTheta])
 	);
 
 	return { move(hessianIJ), move(hessianIK), move(hessianJK) };

@@ -1,0 +1,25 @@
+potentialPack is ready for
+            Energy     Force    Hessian
+Pair/Bond     o          o         o
+Angle         o          o         o
+Dihedral      o          o         x
+Many body     x          x         x
+
+Pair/Bond potential:
+- Harmonic bond potential
+- Lennard-Jones potential
+- Buckingham potential
+- Morse potential
+
+Angle potential:
+- Harmonic angle potential
+
+Bond+Angle potential:
+- Stillinger-Weber potential
+
+Dihedral potential
+- Harmonic dihedral potential
+
+Many body potential
+- 
+

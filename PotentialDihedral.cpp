@@ -132,6 +132,7 @@ PotentialDihedral::ForceImp (
 	auto rjkCnjkl = Cross(rjk, njkl);
 	auto rklCnijk = Cross(rkl, nijk);
 	auto rklCnjkl = Cross(rkl, njkl);
+
 	auto forceIJ = Addition (
 		Scale(nij, -_1stDeri[DRij] +
 			_1stDeri[DCosThetaIJK]*cosThetaIJK*inverseRij_),
@@ -171,7 +172,88 @@ PotentialDihedral::HessianImp (
 {
 	using namespace Dihedral_Namespace;
 
-	;
+	auto rij_ = Norm(rij);
+	auto inverseRij_ = 1./rij_;
+	auto nij = UnitVector(rij, inverseRij_);
+	auto rjk_ = Norm(rjk);
+	auto inverseRjk_ = 1./rjk_;
+	auto njk = UnitVector(rjk, inverseRjk_);
+	auto rkl_ = Norm(rkl);
+	auto inverseRkl_ = 1./rkl_;
+	auto nkl = UnitVector(rkl, inverseRkl_);
+	auto cosThetaIJK = CosTheta(nij, njk);
+	auto cosThetaJKL = CosTheta(njk, nkl);
+	auto nijk = Cross(rij, rjk);
+	auto njkl = Cross(rjk, rkl);
+	auto inverseNijk_ = 1./Norm(nijk);
+	auto inverseNjkl_ = 1./Norm(njkl);
+	auto cosPhi = CosTheta(UnitVector(nijk, inverseNijk_), UnitVector(njkl, inverseNjkl_));
+	auto _1stDeri = _1stDeriFunc(cosPhi, rij_, rjk_, rkl_, cosThetaIJK, cosThetaJKL);
+	auto _2ndDeri = _2ndDeriFunc(cosPhi, rij_, rjk_, rkl_, cosThetaIJK, cosThetaJKL);
+
+/*	auto inverseNijk_Njkl_ = inverseNijk_*inverseNjkl_;
+	auto inverseNijk_Sq = inverseNijk_*inverseNijk_;
+	auto inverseNjkl_Sq = inverseNjkl_*inverseNjkl_;
+	auto cosPhi_dri = Addition (
+		Scale(Cross(rjk, njkl), -inverseNijk_Njkl_),
+		Scale(Cross(rjk, nijk), cosPhi*inverseNijk_Sq)
+	);
+	auto cosPhi_drkj = Addition (
+		Addition (
+			Scale(Cross(rij, njkl), -inverseNijk_Njkl_),
+			Scale(Cross(rkl, nijk), inverseNijk_Njkl_)
+		),
+		Scale(Cross(rij, nijk), cosPhi*inverseNijk_Sq),
+		Scale(Cross(rkl, njkl), -cosPhi*inverseNjkl_Sq)
+	);
+	auto cosPhi_drj = Scale(Addition(cosPhi_dri, cosPhi_drkj), -1.);
+	auto cosPhi_dri_drj = ;
+	auto cosThetaIJK_dri = Addition (
+		Scale(nij, cosThetaIJK*inverseRij_),
+		Scale(njk, -inverseRij_)
+	);
+	auto cosThetaIJK_dri_drj = ;
+	matrix3d hessianIJ = Addition (
+		OuterDot( Addition (
+			Scale(cosPhi_dri, _2ndDeri[DCosPhi_DCosPhi]),
+			Scale(nij, -_2ndDeri[DCosPhi_DRij]),
+			Scale(cosThetaIJK_dri, _2ndDeri[DCosPhi_DCosThetaIJK])
+		), cosPhi_drj),
+		OuterDot( Addition (
+			Scale(cosPhi_dri, _2ndDeri[DCosPhi_DRij]),
+			Scale(nij, _2ndDeri[DRij_DRij]),
+			Scale(cosThetaIJK_dri, _2ndDeri[DRij_DCosThetaIJK])
+		), nij),
+		OuterDot( Addition (
+			Scale(cosPhi_dri, _2ndDeri[DCosPhi_Drjk]),
+			Scale(nij, _2ndDeri[DRij_DRjk]),
+			Scale(cosThetaIJK_dri, _2ndDeri[DRjk_DCosThetaIJK])
+		), Scale(njk, -1.)),
+		OuterDot( Addition (
+			Scale(cosPhi_dri, _2ndDeri[DCosPhi_DCosPhi]),
+			Scale(nij, _2ndDeri[DRij_DCosThetaIJK]),
+			Scale(cosThetaIJK_dri, _2ndDeri[DCosThetaIJK_DCosThetaIJK])
+		), cosThetaIJK_drj),
+		OuterDot( Addition (
+			Scale(cosPhi_dri, _2ndDeri[DCosPhi_DCosThetaJKL]),
+			Scale(nij, _2ndDeri[DRij_DCosThetaJKL]),
+			Scale(cosThetaIJK_dri, _2ndDeri[DCosThetaIJK_DCosThetaJKL])
+		), cosThetaJKL_drj),
+		Scale(cosPhi_dri_drj, _1stDeri[DCosPhi]),
+		Scale(Identity(), -_1stDeri[DRij]),
+		Scale(cosThetaIJK_dri_drj, _1stDeri[DCosThetaIJK]),
+	);*/
+matrix3d hessianIJ{};
+	matrix3d hessianIK{};
+	matrix3d hessianIL{};
+	matrix3d hessianJK{};
+	matrix3d hessianJL{};
+	matrix3d hessianKL{};
+	return {{
+		move(hessianIJ), move(hessianIK), move(hessianIL),
+		move(hessianJK), move(hessianJL),
+		move(hessianKL)
+	}};
 }
 
 //---------------------------------------------------------------------------//
@@ -335,6 +417,10 @@ PotentialDihedral::_2ndDCosNPhi (
 		cosPhiSq = cosPhi * cosPhi;
 		return cosPhiSq*(cosPhiSq*960.-576.)+36.;
 	}
-	return 0.;//
+	auto phi = acos(cosPhi);
+	auto sinPhi = sin(phi);
+	auto sinNPhi = sin(n*phi);
+	auto sinPhiSq = sinPhi*sinPhi;
+	return -n*n*CosNPhi(n, cosPhi)/sinPhiSq + n*sinNPhi*cosPhi/(sinPhi*sinPhiSq);
 }
 
