@@ -1,35 +1,34 @@
 #ifndef POTENTIAL_LENNARDJONES_H_INCLUDED
 #define POTENTIAL_LENNARDJONES_H_INCLUDED
 
-#include "Potential.h"
+#include "PotentialPair.h"
 
-class Potential_LennardJones : public Potential {
+class Potential_LennardJones : public PotentialPair {
 public:
 	Potential_LennardJones (
 		double epsilon = 1.,
 		double sigma = 1.
 	) noexcept;
 
-protected:
+private:
 	double
 	ObjectiveFunction (
 		double rij
 	) const noexcept override;
 
 
-	Potential::Pair_1stDerivative_t
+	_1stDerivative_t
 	_1stDerivative (
 		double rij
 	) const noexcept override;
 
 
-	Potential::Pair_2ndDerivative_t
+	_2ndDerivative_t
 	_2ndDerivative (
 		double rij
 	) const noexcept override;
 
-	//-------------------------------------//
-
+protected:
 	double
 	Factor6 (
 		double inverseRij

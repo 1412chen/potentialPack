@@ -1,6 +1,9 @@
-#include "Potential.h"
+//#include "PotentialPair.h"
+//#include "PotentialAngle.h"
+#include "PotentialBondAngle.h"
 
-class Potential_StillingerWeber : public Potential {
+
+class Potential_StillingerWeber : public PotentialBondAngle {
 public:
 	Potential_StillingerWeber (
 		double epsilon = 2.1683,
@@ -15,52 +18,49 @@ public:
 		double q = 0.
 	) noexcept;
 
+private:
+	double
+	ObjectiveFunction (
+		double rij
+	) const noexcept override;
+
+
+	double
+	ObjectiveFunction (
+		double cosTheta,
+		double rij,
+		double rik
+	) const noexcept override;
+
+
+	PotentialPair::_1stDerivative_t
+	_1stDerivative (
+		double rij
+	) const noexcept override;
+
+
+	PotentialAngle::_1stDerivative_t
+	_1stDerivative (
+		double cosTheta,
+		double rij,
+		double rik
+	) const noexcept override;
+
+
+	PotentialPair::_2ndDerivative_t
+	_2ndDerivative (
+		double rij
+	) const noexcept override;
+
+
+	PotentialAngle::_2ndDerivative_t
+	_2ndDerivative (
+		double cosTheta,
+		double rij,
+		double rik
+	) const noexcept override;
+
 protected:
-	double
-	ObjectiveFunction (
-		double rij
-	) const noexcept override;
-
-
-	double
-	ObjectiveFunction (
-		double cosTheta,
-		double rij,
-		double rik
-	) const noexcept override;
-
-	//-------------------------------------//
-
-	double
-	_1stDerivative (
-		double rij
-	) const noexcept override;
-
-
-	Angle_Namespace::_1stDerivative_t
-	_1stDerivative (
-		double cosTheta,
-		double rij,
-		double rik
-	) const noexcept override;
-
-	//-------------------------------------//
-
-	double
-	_2ndDerivative (
-		double rij
-	) const noexcept override;
-
-
-	Angle_Namespace::_2ndDerivative_t
-	_2ndDerivative (
-		double cosTheta,
-		double rij,
-		double rik
-	) const noexcept override;
-
-	//-------------------------------------//
-
 	double
 	FactorPair (
 		double rij,

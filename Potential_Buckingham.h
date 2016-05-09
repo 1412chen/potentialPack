@@ -1,9 +1,9 @@
 #ifndef POTENTIAL_BUCKINGHAM_H_INCLUDED
 #define POTENTIAL_BUCKINGHAM_H_INCLUDED
 
-#include "Potential.h"
+#include "PotentialPair.h"
 
-class Potential_Buckingham : public Potential {
+class Potential_Buckingham : public PotentialPair {
 public:
 	Potential_Buckingham (
 		double A = 0.13169812355066,
@@ -11,25 +11,25 @@ public:
 		double C = 12.
 	) noexcept;
 
-protected:
+private:
 	double
 	ObjectiveFunction (
 		double rij
 	) const noexcept override;
 
 
-	Potential::Pair_1stDerivative_t
+	_1stDerivative_t
 	_1stDerivative (
 		double rij
 	) const noexcept override;
 
 
-	Potential::Pair_2ndDerivative_t
+	_2ndDerivative_t
 	_2ndDerivative (
 		double rij
 	) const noexcept override;
 
-private:
+protected:
 	double
 	R6 (
 		double rij

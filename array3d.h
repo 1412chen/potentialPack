@@ -121,6 +121,58 @@ operator- (
 	return Scale(a, -1.);
 }
 
+
+inline double
+Norm (
+	const array3d& rij
+) noexcept
+{
+	return sqrt( Square(rij) );
+}
+
+
+inline array3d
+UnitVector (
+	const array3d& rij,
+	double inverseRij
+) noexcept
+{
+	return Scale(rij, inverseRij);
+}
+
+
+inline array3d
+UnitVector (
+	const array3d& rij
+) noexcept
+{
+	auto rij_ = Norm(rij);
+	return UnitVector(rij, 1./rij_);
+}
+
+
+inline double
+CosTheta (
+	const array3d& nij,
+	const array3d& nik
+) noexcept
+{
+	return Dot(nij, nik);
+}
+
+
+inline double
+CosPhi (
+	const array3d& rij,
+	const array3d& rjk,
+	const array3d& rkl
+) noexcept
+{
+	auto normalIJK = UnitVector(Cross(rij, rjk));
+	auto normalJKL = UnitVector(Cross(rjk, rkl));
+	return CosTheta(normalIJK, normalJKL);
+}
+
 //---------------------------------------------------------------------------//
 
 inline matrix3d
