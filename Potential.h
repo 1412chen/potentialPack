@@ -52,7 +52,7 @@ public:
 	//-------------------------------------//
 
 	// pair
-	virtual array3d // fji
+	virtual array3d // fij
 	Force (
 		const array3d& rij
 	) const noexcept;

@@ -22,18 +22,18 @@ void test_1stDerivative ()
 {
 	auto force = potential.Force(rij);
 	cout << "potentialPack:" << endl;
-	cout << "fi: " <<  -force[0] << " " << -force[1] << " " << force[2] << endl;
-	cout << "fj: " << force[0] << " " << force[1] << " " << force[2] << endl;
+	cout << "fi: " << force[0] << " " << force[1] << " " << force[2] << endl;
+	cout << "fj: " << -force[0] << " " << -force[1] << " " << -force[2] << endl;
 
 	force = potential.Force(rij, FiniteDifference_t());
 	cout << "potentialPack (finite difference):" << endl;
-	cout << "fi: " <<  -force[0] << " " << -force[1] << " " << force[2] << endl;
-	cout << "fj: " << force[0] << " " << force[1] << " " << force[2] << endl;
+	cout << "fi: " << force[0] << " " << force[1] << " " << force[2] << endl;
+	cout << "fj: " << -force[0] << " " << -force[1] << " " << -force[2] << endl;
 
 	double energy = potential.Energy(rij);
 	double e;
 	cout << "finite difference:" << endl;
-	cout << "fj: ";
+	cout << "fi: ";
 	rij[0] += finiteDist;
 	e = potential.Energy(rij);
 	cout << (e-energy)/finiteDist << " ";
@@ -67,24 +67,24 @@ void test_2ndDerivative ()
 	// compare to drjdri
 	cout << "finite difference:\nHij:"<<endl;
 	auto force = potential.Force(rij);
-	rij[0] -= finiteDist;
-	auto dForce = potential.Force(rij);
-	cout << (dForce[0]-force[0])/finiteDist << " "
-		<< (dForce[1]-force[1])/finiteDist << " "
-		<< (dForce[2]-force[2])/finiteDist << endl;
 	rij[0] += finiteDist;
-	rij[1] -= finiteDist;
-	dForce = potential.Force(rij);
-	cout << (dForce[0]-force[0])/finiteDist << " "
-		<< (dForce[1]-force[1])/finiteDist << " "
-		<< (dForce[2]-force[2])/finiteDist << endl;
+	auto dForce = potential.Force(rij);
+	cout << -(dForce[0]-force[0])/finiteDist << " "
+		<< -(dForce[1]-force[1])/finiteDist << " "
+		<< -(dForce[2]-force[2])/finiteDist << endl;
+	rij[0] -= finiteDist;
 	rij[1] += finiteDist;
-	rij[2] -= finiteDist;
 	dForce = potential.Force(rij);
-	cout << (dForce[0]-force[0])/finiteDist << " "
-		<< (dForce[1]-force[1])/finiteDist << " "
-		<< (dForce[2]-force[2])/finiteDist << endl;
+	cout << -(dForce[0]-force[0])/finiteDist << " "
+		<< -(dForce[1]-force[1])/finiteDist << " "
+		<< -(dForce[2]-force[2])/finiteDist << endl;
+	rij[1] -= finiteDist;
 	rij[2] += finiteDist;
+	dForce = potential.Force(rij);
+	cout << -(dForce[0]-force[0])/finiteDist << " "
+		<< -(dForce[1]-force[1])/finiteDist << " "
+		<< -(dForce[2]-force[2])/finiteDist << endl;
+	rij[2] -= finiteDist;
 }
 
 int main ()

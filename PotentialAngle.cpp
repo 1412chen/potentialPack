@@ -110,12 +110,12 @@ PotentialAngle::ForceImp (
 	auto termIK_1 = _1stDeri[DCosTheta] * inverseRik;
 	auto termIK_2 = _1stDeri[DRik] - termIK_1*cosTheta;
 	auto forceIJ = Addition (
-		Scale(nik, termIJ_1),
-		Scale(nij, termIJ_2)
+		Scale(nik, -termIJ_1),
+		Scale(nij, -termIJ_2)
 	);
 	auto forceIK = Addition (
-		Scale(nij, termIK_1),
-		Scale(nik, termIK_2)
+		Scale(nij, -termIK_1),
+		Scale(nik, -termIK_2)
 	);
 	return {{ move(forceIJ), move(forceIK) }};
 }

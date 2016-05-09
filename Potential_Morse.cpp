@@ -38,7 +38,7 @@ Potential_Morse::_2ndDerivative (
 ) const noexcept
 {
 	auto expTerm = ExpTerm(rij);
-	return 2.*m_alpha*m_alpha*m_D0 * expTerm * (2.*expTerm-1.);
+	return m_alpha*m_alpha*m_D0 * expTerm * (4.*expTerm-2.);
 }
 
 
