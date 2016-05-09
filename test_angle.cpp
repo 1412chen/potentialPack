@@ -6,8 +6,8 @@
 
 using namespace std;
 
-//Potential_HarmonicAngle potential(0.5);
-Potential_StillingerWeber potential;
+Potential_HarmonicAngle potential(0.5);
+//Potential_StillingerWeber potential;
 array3d rij{-sqrt(3.)*0.5, -0.5, 0.};
 array3d rik{sqrt(3.)*0.5, -0.5, 0.};
 constexpr double finiteDist = 1.e-10;
@@ -84,7 +84,6 @@ void test_2ndDerivative ()
 	<< hessian[1][2][0] << " " << hessian[1][2][1] << " " << hessian[1][2][2] << "\t"
 	<< hessian[2][2][0] << " " << hessian[2][2][1] << " " << hessian[2][2][2] << "\n"<< endl;
 
-	// ij, jk
 	cout << "finite difference:" << endl;
 	auto force = potential.Force(rij, rik);
 	auto forceI = Scale( Addition(force[0], force[1]), -1. );
