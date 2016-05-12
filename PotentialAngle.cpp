@@ -109,15 +109,15 @@ PotentialAngle::ForceImp (
 	auto termIJ_2 = _1stDeri[DRij] - termIJ_1*cosTheta;
 	auto termIK_1 = _1stDeri[DCosTheta] * inverseRik;
 	auto termIK_2 = _1stDeri[DRik] - termIK_1*cosTheta;
-	auto forceIJ = Addition (
+	auto forceJI = Addition (
 		Scale(nik, -termIJ_1),
 		Scale(nij, -termIJ_2)
 	);
-	auto forceIK = Addition (
+	auto forceKI = Addition (
 		Scale(nij, -termIK_1),
 		Scale(nik, -termIK_2)
 	);
-	return {{ move(forceIJ), move(forceIK) }};
+	return {{ move(forceJI), move(forceKI) }};
 }
 
 //---------------------------------------------------------------------------//
@@ -188,14 +188,14 @@ PotentialAngle::HessianImp (
 	auto hessianIK = Addition (
 		OuterDot( Addition (
 			Scale(nij, -_2ndDeri[DRij_DRik]),
-			Scale(nik, -_2ndDeri[DRij_DRij]),
+			Scale(nik, -_2ndDeri[DRik_DRik]),
 			Scale(cosTheta_dri, _2ndDeri[DCosTheta_DRik])
 		), nik),
 		Scale(rik_dri_drk, _1stDeri[DRik]),
 		OuterDot ( Addition (
 			Scale(cosTheta_dri, _2ndDeri[DCosTheta_DCosTheta]),
-			Scale(nij, _2ndDeri[DCosTheta_DRij]),
-			Scale(nik, _2ndDeri[DCosTheta_DRik])
+			Scale(nij, -_2ndDeri[DCosTheta_DRij]),
+			Scale(nik, -_2ndDeri[DCosTheta_DRik])
 		), cosTheta_drk),
 		Scale( cosTheta_dri_drk, _1stDeri[DCosTheta] )
 	);

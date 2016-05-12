@@ -8,8 +8,9 @@ using namespace std;
 
 Potential_HarmonicAngle potential(0.5);
 //Potential_StillingerWeber potential;
-array3d rij{-sqrt(3.)*0.5, -0.5, 0.};
-array3d rik{sqrt(3.)*0.5, -0.5, 0.};
+
+array3d rij{-sqrt(3.)*0.5, -0.5, 0.}; // rj-ri
+array3d rik{sqrt(3.)*0.5, -0.5, 0.}; // rk-ri
 constexpr double finiteDist = 1.e-10;
 
 
@@ -29,7 +30,7 @@ void test_1stDerivative ()
 	double energy = potential.Energy(rij, rik);
 	double e;
 	cout << "fj: ";
-	rij[0] += finiteDist;
+	rij[0] += finiteDist; // move rj
 	e = potential.Energy(rij, rik);
 	cout << -(e-energy)/finiteDist << " ";
 	rij[0] -= finiteDist;
@@ -42,7 +43,7 @@ void test_1stDerivative ()
 	cout << -(e-energy)/finiteDist << "\n";
 	rij[2] -= finiteDist;
 	cout << "fk: ";
-	rik[0] += finiteDist;
+	rik[0] += finiteDist; // move rk
 	e = potential.Energy(rij, rik);
 	cout << -(e-energy)/finiteDist << " ";
 	rik[0] -= finiteDist;
@@ -87,7 +88,7 @@ void test_2ndDerivative ()
 	cout << "finite difference:" << endl;
 	auto force = potential.Force(rij, rik);
 	auto forceI = Scale( Addition(force[0], force[1]), -1. );
-	rij[0] -= finiteDist;
+	rij[0] -= finiteDist; // move ri
 	rik[0] -= finiteDist;
 	auto dForce = potential.Force(rij, rik);
 	auto dForceI = Scale( Addition(dForce[0], dForce[1]), -1.);
@@ -136,7 +137,7 @@ void test_2ndDerivative ()
 	rij[2] += finiteDist;
 	rik[2] += finiteDist;
 
-	rij[0] += finiteDist;
+	rij[0] += finiteDist; // move rj
 	dForce = potential.Force(rij, rik);
 	dForceI = Scale( Addition(dForce[0], dForce[1]), -1.);
 	cout << "Hji\tHjj\tHjk:\n"
@@ -177,7 +178,7 @@ void test_2ndDerivative ()
 	<<	-(dForce[1][2]-force[1][2])/finiteDist << "\n";
 	rij[2] -= finiteDist;
 
-	rik[0] += finiteDist;
+	rik[0] += finiteDist; // move rk
 	dForce = potential.Force(rij, rik);
 	dForceI = Scale( Addition(dForce[0], dForce[1]), -1.);
 	cout <<	"Hki\tHkj\tHkk\n"

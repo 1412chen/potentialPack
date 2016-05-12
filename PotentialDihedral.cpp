@@ -19,8 +19,8 @@ PotentialDihedral::Energy (
 	auto nij = UnitVector(rij, 1./rij_);
 	auto njk = UnitVector(rjk, 1./rjk_);
 	auto nkl = UnitVector(rkl, 1./rkl_);
-	auto cosThetaIJK = CosTheta(nij, njk);
-	auto cosThetaJKL = CosTheta(njk, nkl);
+	auto cosThetaIJK = -CosTheta(nij, njk);
+	auto cosThetaJKL = -CosTheta(njk, nkl);
 	auto cosPhi = CosPhi(rij, rjk, rkl);
 	return ObjectiveFunction(cosPhi, rij_, rjk_, rkl_, cosThetaIJK, cosThetaJKL);
 }
@@ -114,8 +114,8 @@ PotentialDihedral::ForceImp (
 	auto rkl_ = Norm(rkl);
 	auto inverseRkl_ = 1./rkl_;
 	auto nkl = UnitVector(rkl, inverseRkl_);
-	auto cosThetaIJK = CosTheta(nij, njk);
-	auto cosThetaJKL = CosTheta(njk, nkl);
+	auto cosThetaIJK = -CosTheta(nij, njk);
+	auto cosThetaJKL = -CosTheta(njk, nkl);
 	auto nijk = Cross(rij, rjk);
 	auto njkl = Cross(rjk, rkl);
 	auto inverseNijk_ = 1./Norm(nijk);
@@ -134,27 +134,29 @@ PotentialDihedral::ForceImp (
 	auto rklCnjkl = Cross(rkl, njkl);
 
 	auto forceIJ = Addition (
-		Scale(nij, -_1stDeri[DRij] +
+		Scale(nij, _1stDeri[DRij] -
 			_1stDeri[DCosThetaIJK]*cosThetaIJK*inverseRij_),
 		Scale(njk, -_1stDeri[DCosThetaIJK]*inverseRij_),
-		Scale(rjkCnijk, _1stDeri[DCosPhi]*cosPhi*inverseNijk_Sq),
-		Scale(rjkCnjkl, -_1stDeri[DCosPhi]*inverseNijk_Njkl_)
+		Scale(rjkCnijk, -_1stDeri[DCosPhi]*cosPhi*inverseNijk_Sq),
+		Scale(rjkCnjkl, _1stDeri[DCosPhi]*inverseNijk_Njkl_)
 	);
 	auto forceKJ = Addition (
-		Scale(njk, _1stDeri[DRjk] -
-			_1stDeri[DCosThetaIJK]*cosThetaJKL * inverseRjk_),
+		Scale(nij, _1stDeri[DCosThetaIJK]*inverseRjk_),
+		Scale(njk, -_1stDeri[DRjk] +
+			(_1stDeri[DCosThetaIJK]*cosThetaIJK +
+			_1stDeri[DCosThetaJKL]*cosThetaJKL) * inverseRjk_),
 		Scale(nkl, _1stDeri[DCosThetaJKL]*inverseRjk_),
-		Scale(rijCnijk, _1stDeri[DCosPhi]*cosPhi*inverseNijk_Sq),
-		Scale(rijCnjkl, -_1stDeri[DCosPhi]*inverseNijk_Njkl_),
-		Scale(rklCnijk, _1stDeri[DCosPhi]*inverseNijk_Njkl_),
-		Scale(rklCnjkl, -_1stDeri[DCosPhi]*cosPhi*inverseNjkl_Sq)
+		Scale(rijCnijk, -_1stDeri[DCosPhi]*cosPhi*inverseNijk_Sq),
+		Scale(rijCnjkl, _1stDeri[DCosPhi]*inverseNijk_Njkl_),
+		Scale(rklCnijk, -_1stDeri[DCosPhi]*inverseNijk_Njkl_),
+		Scale(rklCnjkl, _1stDeri[DCosPhi]*cosPhi*inverseNjkl_Sq)
 	);
 	auto forceLK = Addition (
-		Scale(njk, -_1stDeri[DCosThetaJKL]*inverseRkl_),
-		Scale(nkl, _1stDeri[DRkl] -
+		Scale(njk, _1stDeri[DCosThetaJKL]*inverseRkl_),
+		Scale(nkl, -_1stDeri[DRkl] +
 			_1stDeri[DCosThetaJKL]*cosThetaJKL*inverseRkl_),
-		Scale(rjkCnijk, -_1stDeri[DCosPhi]*inverseNijk_Njkl_),
-		Scale(rjkCnjkl, _1stDeri[DCosPhi]*cosPhi*inverseNjkl_Sq)
+		Scale(rjkCnijk, _1stDeri[DCosPhi]*inverseNijk_Njkl_),
+		Scale(rjkCnjkl, -_1stDeri[DCosPhi]*cosPhi*inverseNjkl_Sq)
 	);
 	return {{ move(forceIJ), move(forceKJ), move(forceLK) }};
 }
