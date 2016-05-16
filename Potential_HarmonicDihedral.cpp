@@ -40,6 +40,7 @@ Potential_HarmonicDihedral::_1stDerivative (
 ) const noexcept
 {
 	_1stDerivative_t _1stDeri;
+	_1stDeri.fill(0.);
 	_1stDeri[DCosPhi] = m_k*m_d*_1stDCosNPhi(m_n, cosPhi);
 	return _1stDeri;
 }
@@ -56,6 +57,7 @@ Potential_HarmonicDihedral::_2ndDerivative (
 ) const noexcept
 {
 	_2ndDerivative_t _2ndDeri;
+	_2ndDeri.fill(0.);
 	_2ndDeri[DCosPhi_DCosPhi] = m_k*m_d*_2ndDCosNPhi(m_n, cosPhi);
 	return _2ndDeri;
 }

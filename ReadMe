@@ -1,9 +1,5 @@
-potentialPack is ready for
-            Energy     Force    Hessian
-Pair/Bond     o          o         o
-Angle         o          o         o
-Dihedral      o          o         x
-Many body     x          x         x
+potentialPack
+See https://github.com/1412chen/potentialPack for more detail
 
 Pair/Bond potential:
 - Harmonic bond potential

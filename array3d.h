@@ -105,6 +105,31 @@ Cross (
 
 
 inline double
+TripleDot ( // a . ( b x c )
+	const array3d& a,
+	const array3d& b,
+	const array3d& c
+) noexcept
+{
+	return Dot(a, Cross(b, c));
+}
+
+
+inline array3d
+VectorTripleDot ( // a x ( b x c )
+	const array3d& a,
+	const array3d& b,
+	const array3d& c
+) noexcept
+{
+	return Minus(
+		Scale(b, Dot(a, c)),
+		Scale(c, Dot(a, b))
+	);
+}
+
+
+inline double
 Square (
 	const array3d& data
 ) noexcept

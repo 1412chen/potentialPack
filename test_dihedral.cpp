@@ -151,12 +151,12 @@ void test_2ndDerivative ()
 
 	cout << "finite difference:" << endl;
 	auto force = potential.Force(rij, rjk, rkl);
-	auto forceJ = Scale( Addition( force[1], force[2] ), -1.);
-	auto forceK = Addition( force[2], Scale(force[3], -1.) );
+	auto forceJ = Scale( Addition( force[0], force[1] ), -1.);
+	auto forceK = Addition( force[1], Scale(force[2], -1.) );
 	rij[0] -= FiniteDist; // move ri
 	auto dForce = potential.Force(rij, rjk, rkl);
-	auto dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	auto dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	auto dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	auto dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout << "Hii\tHij\tHik\tHil\n"
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -173,8 +173,8 @@ void test_2ndDerivative ()
 	rij[0] += FiniteDist;
 	rij[1] -= FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -191,8 +191,8 @@ void test_2ndDerivative ()
 	rij[1] += FiniteDist;
 	rij[2] -= FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -211,8 +211,8 @@ void test_2ndDerivative ()
 	rij[0] += FiniteDist; // move rj
 	rjk[0] -= FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout << "Hji\tHjj\tHjk\tHjl\n"
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -231,8 +231,8 @@ void test_2ndDerivative ()
 	rij[1] += FiniteDist;
 	rjk[1] -= FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -251,8 +251,8 @@ void test_2ndDerivative ()
 	rij[2] += FiniteDist;
 	rjk[2] -= FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -272,8 +272,8 @@ void test_2ndDerivative ()
 	rjk[0] += FiniteDist; // move rk
 	rkl[0] -= FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout << "Hki\tHkj\tHkk\tHkl:\n"
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -292,8 +292,8 @@ void test_2ndDerivative ()
 	rjk[1] += FiniteDist;
 	rkl[1] -= FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -312,8 +312,8 @@ void test_2ndDerivative ()
 	rjk[2] += FiniteDist;
 	rkl[2] -= FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -332,8 +332,8 @@ void test_2ndDerivative ()
 
 	rkl[0] += FiniteDist; // move rl
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout << "Hli\tHlj\tHlk\tHll:\n"
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -350,8 +350,8 @@ void test_2ndDerivative ()
 	rkl[0] -= FiniteDist;
 	rkl[1] += FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
@@ -368,8 +368,8 @@ void test_2ndDerivative ()
 	rkl[1] -= FiniteDist;
 	rkl[2] += FiniteDist;
 	dForce = potential.Force(rij, rjk, rkl);
-	dForceJ = Scale( Addition( dForce[1], dForce[2] ), -1.);
-	dForceK = Addition( dForce[2], Scale(dForce[3], -1.) );
+	dForceJ = Scale( Addition( dForce[0], dForce[1] ), -1.);
+	dForceK = Addition( dForce[1], Scale(dForce[2], -1.) );
 	cout
 	<< -(dForce[0][0]-force[0][0])/FiniteDist << " "
 	<< -(dForce[0][1]-force[0][1])/FiniteDist << " "
