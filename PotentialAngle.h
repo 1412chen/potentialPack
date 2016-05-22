@@ -50,6 +50,20 @@ public:
 		FiniteDifference_t
 	) const noexcept override;
 
+
+	void
+	_1stDebug(
+		const array3d& rij,
+		const array3d& rik
+	) const noexcept;
+
+
+	void
+	_2ndDebug(
+		const array3d& rij,
+		const array3d& rik
+	) const noexcept;
+
 private:
 	std::array<array3d, 2>
 	ForceImp (

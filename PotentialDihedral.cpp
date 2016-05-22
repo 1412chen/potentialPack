@@ -173,7 +173,6 @@ PotentialDihedral::HessianImp (
 	using namespace Dihedral_Namespace;
 
 	auto rij_ = Norm(rij);
-	auto rij_Sq = rij_*rij_;
 	auto inverseRij_ = 1./rij_;
 	auto nij = UnitVector(rij, inverseRij_);
 	auto rjk_ = Norm(rjk);
@@ -737,100 +736,5 @@ PotentialDihedral::_2ndDerivative (
 		(increment1stDeri_CosThetaIJK[5]-current1stDeri[5]) * InverseFiniteDistance,
 		(increment1stDeri_CosThetaJKL[5]-current1stDeri[5]) * InverseFiniteDistance,
 	};
-}
-
-
-double
-PotentialDihedral::CosNPhi (
-	unsigned n,
-	double cosPhi
-) const noexcept
-{
-	double cosSqPhi;
-	switch( n )
-	{
-	case 0:
-		return 1.;
-	case 1:
-		return cosPhi;
-	case 2:
-		return 2.*cosPhi*cosPhi-1.;
-	case 3:
-		return (4.*cosPhi*cosPhi-3.)*cosPhi;
-	case 4:
-		cosSqPhi = cosPhi * cosPhi;
-		return 8.*cosSqPhi*(cosSqPhi-1) + 1.;
-	case 5:
-		cosSqPhi = cosPhi * cosPhi;
-		return cosPhi*(cosSqPhi*(16.*cosSqPhi-20.)+5.);
-	case 6:
-		cosSqPhi = cosPhi * cosPhi;
-		return cosSqPhi*(cosSqPhi*(32.*cosSqPhi-48.)+18.)-1.;
-	}
-	return cos( n*acos(cosPhi) );
-}
-
-
-double
-PotentialDihedral::_1stDCosNPhi (
-	unsigned n,
-	double cosPhi
-) const noexcept
-{
-	double cosPhiSq;
-	switch( n )
-	{
-	case 0:
-		return 0.;
-	case 1:
-		return 1.;
-	case 2:
-		return 4.*cosPhi;
-	case 3:
-		return 12.*cosPhi*cosPhi - 3.;
-	case 4:
-		return cosPhi*(32.*cosPhi*cosPhi-16.);
-	case 5:
-		cosPhiSq = cosPhi * cosPhi;
-		return 80.*cosPhiSq*cosPhiSq - 60.*cosPhiSq + 5.;
-	case 6:
-		cosPhiSq = cosPhi * cosPhi;
-		return cosPhi*(cosPhiSq*(192.*cosPhiSq-192.)+36.);
-	}
-	auto phi = acos(cosPhi);
-	return n*sin(n*phi)/sin(phi);
-}
-
-
-double
-PotentialDihedral::_2ndDCosNPhi (
-	unsigned n,
-	double cosPhi
-) const noexcept
-{
-	double cosPhiSq;
-	switch( n )
-	{
-	case 0:
-	case 1:
-		return 0.;
-	case 2:
-		return 4.;
-	case 3:
-		return 24.*cosPhi;
-	case 4:
-		return 96.*cosPhi*cosPhi-16.;
-	case 5:
-		cosPhiSq = cosPhi * cosPhi;
-		return cosPhi*(320.*cosPhiSq - 120.);
-	case 6:
-		cosPhiSq = cosPhi * cosPhi;
-		return cosPhiSq*(cosPhiSq*960.-576.)+36.;
-	}
-	auto phi = acos(cosPhi);
-	auto sinPhi = sin(phi);
-	auto sinNPhi = sin(n*phi);
-	auto sinPhiSq = sinPhi*sinPhi;
-	return -n*n*CosNPhi(n, cosPhi)/sinPhiSq + n*sinNPhi*cosPhi/(sinPhi*sinPhiSq);
 }
 

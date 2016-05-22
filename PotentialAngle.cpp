@@ -1,4 +1,5 @@
 #include "PotentialAngle.h"
+#include <iostream>
 
 using namespace std;
 
@@ -81,6 +82,66 @@ PotentialAngle::Hessian (
 		return this->PotentialAngle::_2ndDerivative(cosTheta, rij_, rik_);
 	};
 	return HessianImp(rij, rik, _1stDeriFunc, _2ndDeriFunc);
+}
+
+
+void
+PotentialAngle::_1stDebug (
+	const array3d& rij,
+	const array3d& rik
+) const noexcept
+{
+	using namespace Angle_Namespace;
+
+	auto rij_ = Norm(rij);
+	auto inverseRij = 1./rij_;
+	auto rik_ = Norm(rik);
+	auto inverseRik = 1./rik_;
+	auto nij = UnitVector(rij, inverseRij);
+	auto nik = UnitVector(rik, inverseRik);
+	auto cosTheta = CosTheta(nij, nik);
+	auto _1stDeri = _1stDerivative(cosTheta, rij_, rik_);
+	std::cout << _1stDeri[DCosTheta] << " "
+		<< _1stDeri[DRij] << " "
+		<< _1stDeri[DRik] << std::endl;
+
+	_1stDeri = PotentialAngle::_1stDerivative(cosTheta, rij_, rik_);
+	std::cout << _1stDeri[DCosTheta] << " "
+		<< _1stDeri[DRij] << " "
+		<< _1stDeri[DRik] << std::endl;
+}
+
+
+void
+PotentialAngle::_2ndDebug (
+	const array3d& rij,
+	const array3d& rik
+) const noexcept
+{
+	using namespace Angle_Namespace;
+
+	auto rij_ = Norm(rij);
+	auto inverseRij = 1./rij_;
+	auto rik_ = Norm(rik);
+	auto inverseRik = 1./rik_;
+	auto nij = UnitVector(rij, inverseRij);
+	auto nik = UnitVector(rik, inverseRik);
+	auto cosTheta = CosTheta(nij, nik);
+	auto _2ndDeri = _2ndDerivative(cosTheta, rij_, rik_);
+	std::cout << _2ndDeri[DCosTheta_DCosTheta] << " "
+		<< _2ndDeri[DCosTheta_DRij] << " "
+		<< _2ndDeri[DCosTheta_DRik] << " "
+		<< _2ndDeri[DRij_DRij] << " "
+		<< _2ndDeri[DRij_DRik] << " "
+		<< _2ndDeri[DRik_DRik] << std::endl;
+
+	_2ndDeri = PotentialAngle::_2ndDerivative(cosTheta, rij_, rik_);
+	std::cout << _2ndDeri[DCosTheta_DCosTheta] << " "
+		<< _2ndDeri[DCosTheta_DRij] << " "
+		<< _2ndDeri[DCosTheta_DRik] << " "
+		<< _2ndDeri[DRij_DRij] << " "
+		<< _2ndDeri[DRij_DRik] << " "
+		<< _2ndDeri[DRik_DRik] << std::endl;
 }
 
 //---------------------------------------------------------------------------//

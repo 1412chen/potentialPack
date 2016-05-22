@@ -1,13 +1,21 @@
 #include "Potential_HarmonicAngle.h"
+#include "Potential_HarmonicCosineAngle.h"
+#include "Potential_CosineAngle.h"
+#include "Potential_QuarticAngle.h"
 #include "Potential_StillingerWeber.h"
+#include "Potential_ScreenedHarmonicAngle.h"
 #include <cmath>
 #include <iostream>
 #include <iomanip>
 
 using namespace std;
 
-Potential_HarmonicAngle potential(0.5);
+//Potential_HarmonicAngle potential(0.5);
+//Potential_HarmonicCosineAngle potential;
+//Potential_CosineAngle potential;
+//Potential_QuarticAngle potential;
 //Potential_StillingerWeber potential;
+Potential_ScreenedHarmonicAngle potential;
 
 array3d rij{-sqrt(3.)*0.5, -0.5, 0.}; // rj-ri
 array3d rik{sqrt(3.)*0.5, -0.5, 0.}; // rk-ri
@@ -223,8 +231,10 @@ void test_2ndDerivative ()
 int main ()
 {
 cout<<setprecision(10);
+	potential._1stDebug(rij, rik);
 	test_1stDerivative();
 cout << endl;
+	potential._2ndDebug(rij, rik);
 	test_2ndDerivative();
 }
 

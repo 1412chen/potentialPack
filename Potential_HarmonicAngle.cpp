@@ -1,4 +1,5 @@
 #include "Potential_HarmonicAngle.h"
+#include "Math_Triangular.h"
 #include <cmath>
 
 using namespace Angle_Namespace;
@@ -35,17 +36,11 @@ Potential_HarmonicAngle::_1stDerivative (
 	double /*rik*/
 ) const noexcept
 {
+	auto theta = acos(cosTheta);
+	auto dTheta = theta-m_theta0;
 	_1stDerivative_t _1stDeri;
 	_1stDeri.fill(0.);
-	if ( 1.-fabs(cosTheta) < FiniteDistance )
-		_1stDeri[DCosTheta] = 2.*m_k*m_theta0 * InverseFiniteDistance;
-	else
-	{
-		auto theta = acos(cosTheta);
-		auto dTheta = theta - m_theta0;
-
-		_1stDeri[DCosTheta] = -2.*m_k*dTheta/sin(theta);
-	}
+	_1stDeri[DCosTheta] = 2.*m_k*dTheta*_1stDTheta(cosTheta);
 	return _1stDeri;
 }
 
@@ -57,19 +52,12 @@ Potential_HarmonicAngle::_2ndDerivative (
 	double /*rik*/
 ) const noexcept
 {
+	auto theta = acos(cosTheta);
+	auto dTheta = theta-m_theta0;
+	auto _1stDTheta = ::_1stDTheta(cosTheta);
 	_2ndDerivative_t _2ndDeri;
 	_2ndDeri.fill(0.);
-	if ( 1.-fabs(cosTheta) < FiniteDistance )
-		_2ndDeri[DCosTheta_DCosTheta] =  2.*m_k*(1.+m_theta0*cosTheta) * InverseFiniteDistance;
-	else
-	{
-		auto sinThetaSq = 1. - cosTheta*cosTheta;
-		auto theta = acos(cosTheta);
-		auto dTheta = theta - m_theta0;
-		auto cotTheta = cosTheta / sqrt(sinThetaSq);
-
-		_2ndDeri[DCosTheta_DCosTheta] = 2.*m_k/sinThetaSq * (1.-dTheta*cotTheta);
-	}
+	_2ndDeri[DCosTheta_DCosTheta] = 2.*m_k*(dTheta*_2ndDTheta(cosTheta)+_1stDTheta*_1stDTheta);
 	return _2ndDeri;
 }
 

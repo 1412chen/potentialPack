@@ -6,7 +6,8 @@ OBJDIR = ../build
 LIBDIR = ..
 LIBFILE = libpotentialPack.a
 
-CPPFILES = Potential.cpp \
+CPPFILES = Math_Triangular.cpp \
+	Potential.cpp \
 	PotentialPair.cpp \
 	PotentialAngle.cpp \
 	PotentialBondAngle.cpp \
@@ -17,6 +18,10 @@ CPPFILES = Potential.cpp \
 	Potential_Morse.cpp \
 	Potential_Buckingham.cpp \
 	Potential_HarmonicAngle.cpp \
+	Potential_HarmonicCosineAngle.cpp \
+	Potential_CosineAngle.cpp \
+	Potential_QuarticAngle.cpp \
+	Potential_ScreenedHarmonicAngle.cpp \
 	Potential_HarmonicDihedral.cpp \
 	Potential_StillingerWeber.cpp 
 #	Potential_Tersoff.cpp 

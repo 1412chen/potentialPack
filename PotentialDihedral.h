@@ -109,27 +109,6 @@ private:
 		double cosThetaIJK,
 		double cosThetaJKL
 	) const noexcept;
-
-protected:
-	double
-	CosNPhi (
-		unsigned n,
-		double cosPhi
-	) const noexcept;
-
-
-	double
-	_1stDCosNPhi (
-		unsigned n,
-		double cosPhi
-	) const noexcept;
-
-
-	double
-	_2ndDCosNPhi (
-		unsigned n,
-		double cosPhi
-	) const noexcept;
 };
 
 #endif // POTENTIALDIHEDRAL_H_INCLUDED
