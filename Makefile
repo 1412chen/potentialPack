@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := LIB
 
-CC = /opt/gcc-6.1.0/bin/g++
+CC_PATH = /opt/gcc-6.1.0
+CC = $(CC_PATH)/bin/g++
 CFLAGS = -std=c++14 -Wall -Wextra
 OBJDIR = ../build
 LIBDIR = ..
@@ -30,6 +31,9 @@ CPPFILES = Math_Triangular.cpp \
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(CPPFILES))
 
 
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 $(OBJDIR)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -37,10 +41,10 @@ clean:
 	rm -rf $(OBJDIR)/*.o
 	rm -f $(OBJDIR)/console
 
-LIB: $(OBJS)
+LIB: $(OBJDIR) $(LIBDIR) $(OBJS)
 	ar rvs $(LIBDIR)/$(LIBFILE) $(OBJS)
 
 
 test: $(OBJDIR)/main.o $(OBJS)
-	$(CC) $(OBJDIR)/main.o $(OBJS) -Wl,--rpath=/opt/gcc-5.3.0/lib64 -o $(OBJDIR)/console
+	$(CC) $(OBJDIR)/main.o $(OBJS) -Wl,--rpath=$(CC_PATH)/lib64 -o $(OBJDIR)/console
 
