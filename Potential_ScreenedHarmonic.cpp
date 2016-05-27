@@ -1,11 +1,11 @@
-#include "Potential_ScreenedHarmonicAngle.h"
+#include "Potential_ScreenedHarmonic.h"
 #include "Math_Triangular.h"
 #include <cmath>
 
 using namespace Angle_Namespace;
 
 
-Potential_ScreenedHarmonicAngle::Potential_ScreenedHarmonicAngle (
+Potential_ScreenedHarmonic::Potential_ScreenedHarmonic (
 	double k,
 	double theta0,
 	double rho1,
@@ -19,7 +19,7 @@ Potential_ScreenedHarmonicAngle::Potential_ScreenedHarmonicAngle (
 
 
 double
-Potential_ScreenedHarmonicAngle::ObjectiveFunction (
+Potential_ScreenedHarmonic::ObjectiveFunction (
 	double cosTheta,
 	double rij_,
 	double rik_
@@ -34,7 +34,7 @@ Potential_ScreenedHarmonicAngle::ObjectiveFunction (
 
 
 _1stDerivative_t
-Potential_ScreenedHarmonicAngle::_1stDerivative (
+Potential_ScreenedHarmonic::_1stDerivative (
 	double cosTheta,
 	double rij_,
 	double rik_
@@ -56,7 +56,7 @@ Potential_ScreenedHarmonicAngle::_1stDerivative (
 
 
 _2ndDerivative_t
-Potential_ScreenedHarmonicAngle::_2ndDerivative (
+Potential_ScreenedHarmonic::_2ndDerivative (
 	double cosTheta,
 	double rij_,
 	double rik_

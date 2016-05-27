@@ -3,7 +3,8 @@
 #include "Potential_CosineAngle.h"
 #include "Potential_QuarticAngle.h"
 #include "Potential_StillingerWeber.h"
-#include "Potential_ScreenedHarmonicAngle.h"
+#include "Potential_ScreenedHarmonic.h"
+#include "Potential_Compass.h"
 #include <cmath>
 #include <iostream>
 #include <iomanip>
@@ -15,7 +16,8 @@ using namespace std;
 //Potential_CosineAngle potential;
 //Potential_QuarticAngle potential;
 //Potential_StillingerWeber potential;
-Potential_ScreenedHarmonicAngle potential;
+//Potential_ScreenedHarmonicAngle potential;
+Potential_Compass potential;
 
 array3d rij{-sqrt(3.)*0.5, -0.5, 0.}; // rj-ri
 array3d rik{sqrt(3.)*0.5, -0.5, 0.}; // rk-ri

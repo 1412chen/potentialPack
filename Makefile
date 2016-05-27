@@ -15,13 +15,14 @@ CPPFILES = Math_Triangular.cpp \
 	PotentialManybody.cpp \
 	Potential_HarmonicBond.cpp \
 	Potential_LennardJones.cpp \
-	Potential_Morse.cpp \
 	Potential_Buckingham.cpp \
+	Potential_Morse.cpp \
 	Potential_HarmonicAngle.cpp \
 	Potential_HarmonicCosineAngle.cpp \
 	Potential_CosineAngle.cpp \
 	Potential_QuarticAngle.cpp \
-	Potential_ScreenedHarmonicAngle.cpp \
+	Potential_ScreenedHarmonic.cpp \
+	Potential_Compass.cpp \
 	Potential_HarmonicDihedral.cpp \
 	Potential_StillingerWeber.cpp 
 #	Potential_Tersoff.cpp 

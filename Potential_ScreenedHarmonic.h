@@ -1,11 +1,11 @@
-#ifndef POTENTIAL_SCREENEDHARMONICANGLE_H_INCLUDED
-#define POTENTIAL_SCREENEDHARMONICANGLE_H_INCLUDED
+#ifndef POTENTIAL_SCREENEDHARMONIC_H_INCLUDED
+#define POTENTIAL_SCREENEDHARMONIC_H_INCLUDED
 
 #include "PotentialAngle.h"
 
-class Potential_ScreenedHarmonicAngle : public PotentialAngle {
+class Potential_ScreenedHarmonic : public PotentialAngle {
 public:
-	Potential_ScreenedHarmonicAngle (
+	Potential_ScreenedHarmonic (
 		double k = 0.5,
 		double theta0 = 0.3,
 		double rho1 = 0.17,
@@ -43,4 +43,4 @@ private:
 	double m_inverseRho2;
 };
 
-#endif // POTENTIAL_SCREENEDHARMONICANGLE_H_INCLUDED
+#endif // POTENTIAL_SCREENEDHARMONIC_H_INCLUDED
