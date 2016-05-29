@@ -7,8 +7,7 @@ class Potential_HarmonicDihedral : public PotentialDihedral {
 public:
 	Potential_HarmonicDihedral (
 		double k = 0.5,
-		int d = 1,
-		unsigned n = 3
+		double phi0 = 0.3
 	) noexcept;
 
 private:
@@ -46,8 +45,7 @@ private:
 
 private:
 	double m_k;
-	int m_d;
-	unsigned m_n;
+	double m_phi0;
 };
 
 #endif // POTENTIAL_HARMONICDIHEDRAL_H_INCLUDED

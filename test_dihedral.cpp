@@ -1,11 +1,15 @@
 #include "Potential_HarmonicDihedral.h"
+#include "Potential_CosineDihedral.h"
+#include "Potential_HarmonicCosineDihedral.h"
 #include <iomanip>
 #include <iostream>
 
 using namespace std;
 
 
-Potential_HarmonicDihedral potential;
+//Potential_HarmonicDihedral potential;
+//Potential_CosineDihedral potential;
+Potential_HarmonicCosineDihedral potential;
 
 array3d rij{0.4, -0.4, 0.9}; // rj-ri
 array3d rjk{0.4, 0.38, -0.4}; // rk-rj

@@ -186,6 +186,14 @@ public:
 		const std::vector<array3d>& rik,
 		FiniteDifference_t
 	) const noexcept;
+
+protected:
+	constexpr array3d
+	ZeroForce () const noexcept;
+
+
+	constexpr matrix3d
+	ZeroHessian () const noexcept;
 };
 
 #endif // POTENTIAL_H_INCLUDED

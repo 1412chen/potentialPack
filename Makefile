@@ -25,6 +25,8 @@ CPPFILES = Math_Triangular.cpp \
 	Potential_ScreenedHarmonic.cpp \
 	Potential_Compass.cpp \
 	Potential_HarmonicDihedral.cpp \
+	Potential_CosineDihedral.cpp \
+	Potential_HarmonicCosineDihedral.cpp \
 	Potential_StillingerWeber.cpp 
 #	Potential_Tersoff.cpp 
 

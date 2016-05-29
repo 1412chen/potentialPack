@@ -7,12 +7,10 @@ using namespace Dihedral_Namespace;
 
 Potential_HarmonicDihedral::Potential_HarmonicDihedral (
 	double k,
-	int d,
-	unsigned n
+	double phi0
 ) noexcept :
 	m_k( k ),
-	m_d( d ),
-	m_n( n )
+	m_phi0( phi0 )
 {}
 
 
@@ -26,7 +24,8 @@ Potential_HarmonicDihedral::ObjectiveFunction (
 	double /*cosThetaJKL*/
 ) const noexcept
 {
-	return m_k*( 1. + m_d*CosNTheta(m_n, cosPhi) );
+	auto dPhi = acos(cosPhi) - m_phi0;
+	return m_k*dPhi*dPhi;
 }
 
 
@@ -40,9 +39,11 @@ Potential_HarmonicDihedral::_1stDerivative (
 	double /*cosThetaJKL*/
 ) const noexcept
 {
+	auto dPhi = acos(cosPhi) - m_phi0;
+
 	_1stDerivative_t _1stDeri;
 	_1stDeri.fill(0.);
-	_1stDeri[DCosPhi] = m_k*m_d*_1stDCosNTheta(m_n, cosPhi);
+	_1stDeri[DCosPhi] = 2.*m_k*dPhi*_1stDTheta(cosPhi);
 	return _1stDeri;
 }
 
@@ -57,9 +58,12 @@ Potential_HarmonicDihedral::_2ndDerivative (
 	double /*cosThetaJKL*/
 ) const noexcept
 {
+	auto dPhi = acos(cosPhi) - m_phi0;
+	auto _1stDPhi = _1stDTheta(cosPhi);
+
 	_2ndDerivative_t _2ndDeri;
 	_2ndDeri.fill(0.);
-	_2ndDeri[DCosPhi_DCosPhi] = m_k*m_d*_2ndDCosNTheta(m_n, cosPhi);
+	_2ndDeri[DCosPhi_DCosPhi] = 2.*m_k*(dPhi*_2ndDTheta(cosPhi) + _1stDPhi*_1stDPhi);
 	return _2ndDeri;
 }
 

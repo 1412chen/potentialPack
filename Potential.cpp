@@ -54,7 +54,7 @@ Potential::Force (
 	const array3d& /*rij*/
 ) const noexcept
 {
-	return array3d{};
+	return ZeroForce();
 }
 
 
@@ -64,7 +64,7 @@ Potential::Force (
 	FiniteDifference_t
 ) const noexcept
 {
-	return array3d{};
+	return ZeroForce();
 }
 
 
@@ -74,7 +74,7 @@ Potential::Force (
 	const array3d& /*rik*/
 ) const noexcept
 {
-	return {array3d{}, array3d{}};
+	return {ZeroForce(), ZeroForce()};
 }
 
 
@@ -85,7 +85,7 @@ Potential::Force (
 	FiniteDifference_t
 ) const noexcept
 {
-	return {array3d{}, array3d{}};
+	return {ZeroForce(), ZeroForce()};
 }
 
 
@@ -96,7 +96,7 @@ Potential::Force (
 	const array3d& /*rkl*/
 ) const noexcept
 {
-	return {array3d{}, array3d{}, array3d{}};
+	return {ZeroForce(), ZeroForce(), ZeroForce()};
 }
 
 
@@ -108,7 +108,7 @@ Potential::Force (
 	FiniteDifference_t
 ) const noexcept
 {
-	return {array3d{}, array3d{}, array3d{}};
+	return {ZeroForce(), ZeroForce(), ZeroForce()};
 }
 
 
@@ -118,7 +118,7 @@ Potential::Force (
 	const vector<array3d>& rik
 ) const noexcept
 {
-	return vector<array3d>(rik.size()+1, array3d{});
+	return vector<array3d>(rik.size()+1, ZeroForce());
 }
 
 
@@ -129,7 +129,7 @@ Potential::Force (
 	FiniteDifference_t
 ) const noexcept
 {
-	return vector<array3d>(rik.size()+1, array3d{});
+	return vector<array3d>(rik.size()+1, ZeroForce());
 }
 
 //---------------------------------------------------------------------------//
@@ -139,7 +139,7 @@ Potential::Hessian (
 	const array3d& /*rij*/
 ) const noexcept
 {
-	return matrix3d{};
+	return ZeroHessian();
 }
 
 
@@ -149,7 +149,7 @@ Potential::Hessian (
 	FiniteDifference_t
 ) const noexcept
 {
-	return matrix3d{};
+	return ZeroHessian();
 }
 
 
@@ -159,7 +159,7 @@ Potential::Hessian (
 	const array3d& /*rik*/
 ) const noexcept
 {
-	return {matrix3d{}, matrix3d{}, matrix3d{}};
+	return {ZeroHessian(), ZeroHessian(), ZeroHessian()};
 }
 
 
@@ -170,7 +170,7 @@ Potential::Hessian (
 	FiniteDifference_t
 ) const noexcept
 {
-	return {matrix3d{}, matrix3d{}, matrix3d{}};
+	return {ZeroHessian(), ZeroHessian(), ZeroHessian()};
 }
 
 
@@ -181,7 +181,7 @@ Potential::Hessian (
 	const array3d& /*rkl*/
 ) const noexcept
 {
-	return {matrix3d{}, matrix3d{}, matrix3d{}, matrix3d{}, matrix3d{}, matrix3d{}};
+	return {ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian()};
 }
 
 
@@ -193,7 +193,7 @@ Potential::Hessian (
 	FiniteDifference_t
 ) const noexcept
 {
-	return {matrix3d{}, matrix3d{}, matrix3d{}, matrix3d{}, matrix3d{}, matrix3d{}};
+	return {ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian()};
 }
 
 
@@ -203,7 +203,7 @@ Potential::Hessian (
 	const std::vector<array3d>& rik
 ) const noexcept
 {
-	return vector<matrix3d>(rik.size()+1, matrix3d{});
+	return vector<matrix3d>(rik.size()+1, ZeroHessian());
 }
 
 
@@ -214,6 +214,22 @@ Potential::Hessian (
 	FiniteDifference_t
 ) const noexcept
 {
-	return vector<matrix3d>(rik.size()+1, matrix3d{});
+	return vector<matrix3d>(rik.size()+1, ZeroHessian());
+}
+
+
+constexpr array3d
+Potential::ZeroForce () const noexcept
+{
+	return array3d{0., 0., 0.};
+}
+
+
+constexpr matrix3d
+Potential::ZeroHessian () const noexcept
+{
+	return matrix3d {
+		ZeroForce(), ZeroForce(), ZeroForce()
+	};
 }
 
