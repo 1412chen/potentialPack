@@ -10,6 +10,22 @@ constexpr double PI = 3.14159265358979323846;
 
 struct FiniteDifference_t {};
 
+//---------------------------------------------------------------------------//
+
+struct Pair_t {};
+struct Angle_t {};
+struct Dihedral_t {};
+struct Manybody_t {};
+
+//---------------------------------------------------------------------------//
+
+namespace Pair_Namespace {
+	enum {DRij};
+	enum {DRij_DRij};
+	using _1stDerivative_t = double;
+	using _2ndDerivative_t = double;
+};
+
 
 namespace Angle_Namespace {
 	enum {DCosTheta, DRij, DRik};

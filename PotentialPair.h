@@ -7,8 +7,8 @@
 
 class PotentialPair : public Potential {
 public:
-	using _1stDerivative_t = double;
-	using _2ndDerivative_t = double;
+	using _1stDerivative_t = Pair_Namespace::_1stDerivative_t;
+	using _2ndDerivative_t = Pair_Namespace::_2ndDerivative_t;
 	using _1stD_Func = std::function< _1stDerivative_t(double) >;
 	using _2ndD_Func = std::function< _2ndDerivative_t(double) >;
 

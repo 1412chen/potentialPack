@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := LIB
 
-CC_PATH = /opt/gcc-6.1.0
+CC_PATH = /usr
 CC = $(CC_PATH)/bin/g++
 CFLAGS = -std=c++14 -Wall -Wextra
 OBJDIR = ../build

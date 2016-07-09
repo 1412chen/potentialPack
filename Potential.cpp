@@ -3,7 +3,6 @@
 #include <cmath>
 #include <iostream>
 
-using namespace std;
 
 constexpr double FiniteDistance = 1.e-13;
 constexpr double InverseFiniteDistance = 1./FiniteDistance;
@@ -13,7 +12,7 @@ Potential::Energy (
 	const array3d& /*rij*/
 ) const noexcept
 {
-	return 0.;
+	return ZeroEnergy();
 }
 
 
@@ -23,7 +22,7 @@ Potential::Energy (
 	const array3d& /*rik*/
 ) const noexcept
 {
-	return 0.;
+	return ZeroEnergy();
 }
 
 
@@ -34,7 +33,7 @@ Potential::Energy (
 	const array3d& /*rkl*/
 ) const noexcept
 {
-	return 0.;
+	return ZeroEnergy();
 }
 
 
@@ -44,7 +43,7 @@ Potential::Energy (
 	const std::vector<array3d>& /*rik*/
 ) const noexcept
 {
-	return 0.;
+	return ZeroEnergy();
 }
 
 //---------------------------------------------------------------------------//
@@ -54,7 +53,7 @@ Potential::Force (
 	const array3d& /*rij*/
 ) const noexcept
 {
-	return ZeroForce();
+	return ZeroForce( Pair_t() );
 }
 
 
@@ -64,7 +63,7 @@ Potential::Force (
 	FiniteDifference_t
 ) const noexcept
 {
-	return ZeroForce();
+	return ZeroForce( Pair_t() );
 }
 
 
@@ -74,7 +73,7 @@ Potential::Force (
 	const array3d& /*rik*/
 ) const noexcept
 {
-	return {ZeroForce(), ZeroForce()};
+	return ZeroForce( Angle_t() );
 }
 
 
@@ -85,22 +84,22 @@ Potential::Force (
 	FiniteDifference_t
 ) const noexcept
 {
-	return {ZeroForce(), ZeroForce()};
+	return ZeroForce( Angle_t() );
 }
 
 
-array<array3d, 3>
+std::array<array3d, 3>
 Potential::Force (
 	const array3d& /*rij*/,
 	const array3d& /*rjk*/,
 	const array3d& /*rkl*/
 ) const noexcept
 {
-	return {ZeroForce(), ZeroForce(), ZeroForce()};
+	return ZeroForce( Dihedral_t() );
 }
 
 
-array<array3d, 3>
+std::array<array3d, 3>
 Potential::Force (
 	const array3d& /*rij*/,
 	const array3d& /*rjk*/,
@@ -108,28 +107,28 @@ Potential::Force (
 	FiniteDifference_t
 ) const noexcept
 {
-	return {ZeroForce(), ZeroForce(), ZeroForce()};
+	return ZeroForce( Dihedral_t() );
 }
 
 
-vector<array3d>
+std::vector<array3d>
 Potential::Force (
 	const array3d& /*rij*/,
-	const vector<array3d>& rik
+	const std::vector<array3d>& rik
 ) const noexcept
 {
-	return vector<array3d>(rik.size()+1, ZeroForce());
+	return ZeroForce( Manybody_t(), rik.size()+1 );
 }
 
 
-vector<array3d>
+std::vector<array3d>
 Potential::Force (
 	const array3d& /*rij*/,
-	const vector<array3d>& rik,
+	const std::vector<array3d>& rik,
 	FiniteDifference_t
 ) const noexcept
 {
-	return vector<array3d>(rik.size()+1, ZeroForce());
+	return ZeroForce( Manybody_t(), rik.size()+1 );
 }
 
 //---------------------------------------------------------------------------//
@@ -139,7 +138,7 @@ Potential::Hessian (
 	const array3d& /*rij*/
 ) const noexcept
 {
-	return ZeroHessian();
+	return ZeroHessian( Pair_t() );
 }
 
 
@@ -149,7 +148,7 @@ Potential::Hessian (
 	FiniteDifference_t
 ) const noexcept
 {
-	return ZeroHessian();
+	return ZeroHessian( Pair_t() );
 }
 
 
@@ -159,7 +158,7 @@ Potential::Hessian (
 	const array3d& /*rik*/
 ) const noexcept
 {
-	return {ZeroHessian(), ZeroHessian(), ZeroHessian()};
+	return ZeroHessian( Angle_t() );
 }
 
 
@@ -170,7 +169,7 @@ Potential::Hessian (
 	FiniteDifference_t
 ) const noexcept
 {
-	return {ZeroHessian(), ZeroHessian(), ZeroHessian()};
+	return ZeroHessian( Angle_t() );
 }
 
 
@@ -181,7 +180,7 @@ Potential::Hessian (
 	const array3d& /*rkl*/
 ) const noexcept
 {
-	return {ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian()};
+	return ZeroHessian( Dihedral_t() );
 }
 
 
@@ -193,7 +192,7 @@ Potential::Hessian (
 	FiniteDifference_t
 ) const noexcept
 {
-	return {ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian(), ZeroHessian()};
+	return ZeroHessian( Dihedral_t() );
 }
 
 
@@ -203,7 +202,7 @@ Potential::Hessian (
 	const std::vector<array3d>& rik
 ) const noexcept
 {
-	return vector<matrix3d>(rik.size()+1, ZeroHessian());
+	return ZeroHessian( Manybody_t(), rik.size()+1 );
 }
 
 
@@ -214,7 +213,15 @@ Potential::Hessian (
 	FiniteDifference_t
 ) const noexcept
 {
-	return vector<matrix3d>(rik.size()+1, ZeroHessian());
+	return ZeroHessian( Manybody_t(), rik.size()+1 );
+}
+
+//---------------------------------------------//
+
+constexpr double
+Potential::ZeroEnergy () const noexcept
+{
+	return 0.;
 }
 
 
@@ -231,5 +238,80 @@ Potential::ZeroHessian () const noexcept
 	return matrix3d {
 		ZeroForce(), ZeroForce(), ZeroForce()
 	};
+}
+
+//---------------------------------------------//
+
+constexpr array3d
+Potential::ZeroForce (
+	Pair_t
+) const noexcept
+{
+	return ZeroForce();
+}
+
+
+constexpr std::array<array3d, 2>
+Potential::ZeroForce (
+	Angle_t
+) const noexcept
+{
+	return {ZeroForce(), ZeroForce()};
+}
+
+constexpr std::array<array3d, 3>
+Potential::ZeroForce (
+	Dihedral_t
+) const noexcept
+{
+	return {ZeroForce(), ZeroForce(), ZeroForce()};
+}
+
+
+std::vector<array3d>
+Potential::ZeroForce (
+	Manybody_t,
+	unsigned size
+) const noexcept
+{
+	return std::vector<array3d>(size, ZeroForce());
+}
+
+
+constexpr matrix3d
+Potential::ZeroHessian (
+	Pair_t
+) const noexcept
+{
+	return ZeroHessian();
+}
+
+
+constexpr std::array<matrix3d, 3>
+Potential::ZeroHessian (
+	Angle_t
+) const noexcept
+{
+	return {ZeroHessian(), ZeroHessian(), ZeroHessian()};
+}
+
+
+constexpr std::array<matrix3d, 6>
+Potential::ZeroHessian (
+	Dihedral_t
+) const noexcept
+{
+	return {ZeroHessian(), ZeroHessian(), ZeroHessian(),
+		ZeroHessian(), ZeroHessian(), ZeroHessian()};
+}
+
+
+std::vector<matrix3d>
+Potential::ZeroHessian (
+	Manybody_t,
+	unsigned size
+) const noexcept
+{
+	return std::vector<matrix3d>(size, ZeroHessian());
 }
 

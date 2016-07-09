@@ -187,13 +187,67 @@ public:
 		FiniteDifference_t
 	) const noexcept;
 
-protected:
+private:
+	constexpr double
+	ZeroEnergy () const noexcept;
+
+
 	constexpr array3d
 	ZeroForce () const noexcept;
 
 
 	constexpr matrix3d
 	ZeroHessian () const noexcept;
+
+protected:
+	constexpr array3d
+	ZeroForce (
+		Pair_t
+	) const noexcept;
+
+
+	constexpr std::array<array3d, 2>
+	ZeroForce (
+		Angle_t
+	) const noexcept;
+
+
+	constexpr std::array<array3d, 3>
+	ZeroForce (
+		Dihedral_t
+	) const noexcept;
+
+
+	std::vector<array3d>
+	ZeroForce (
+		Manybody_t,
+		unsigned size
+	) const noexcept;
+
+
+	constexpr matrix3d
+	ZeroHessian (
+		Pair_t
+	) const noexcept;
+
+
+	constexpr std::array<matrix3d, 3>
+	ZeroHessian (
+		Angle_t
+	) const noexcept;
+
+
+	constexpr std::array<matrix3d, 6>
+	ZeroHessian (
+		Dihedral_t
+	) const noexcept;
+
+
+	std::vector<matrix3d>
+	ZeroHessian (
+		Manybody_t,
+		unsigned size
+	) const noexcept;
 };
 
 #endif // POTENTIAL_H_INCLUDED
